@@ -8,13 +8,10 @@ Checks, without third-party dependencies:
 - name matches the directory name
 - description is long enough to be useful
 - the English and Chinese READMEs link to each other
-- catalog/local-skills.json parses and its count matches its entries
 """
 
 from __future__ import annotations
 
-import json
-import re
 import sys
 from pathlib import Path
 
@@ -90,37 +87,10 @@ def check_readmes(errors: list[str]) -> None:
             errors.append("README.zh.md does not link back to README.md")
 
 
-def check_catalog(errors: list[str]) -> int:
-    path = ROOT / "catalog" / "local-skills.json"
-    if not path.is_file():
-        errors.append("catalog/local-skills.json is missing")
-        return 0
-    try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:
-        errors.append(f"catalog/local-skills.json is not valid JSON: {exc}")
-        return 0
-
-    skills = data.get("skills")
-    if not isinstance(skills, list):
-        errors.append("catalog/local-skills.json has no skills array")
-        return 0
-    if data.get("count") != len(skills):
-        errors.append(
-            f"catalog count is {data.get('count')} but the array holds {len(skills)} entries"
-        )
-    for entry in skills:
-        for field in ("name", "description", "category"):
-            if not entry.get(field):
-                errors.append(f"catalog entry {entry.get('name', '<unnamed>')} has no {field}")
-    return len(skills)
-
-
 def main() -> int:
     errors: list[str] = []
     skill_count = check_skills(errors)
     check_readmes(errors)
-    catalog_count = check_catalog(errors)
 
     if errors:
         print("validation failed:")
@@ -128,7 +98,7 @@ def main() -> int:
             print(f"  - {error}")
         return 1
 
-    print(f"ok: {skill_count} skills, {catalog_count} catalog entries")
+    print(f"ok: {skill_count} skills")
     return 0
 
 

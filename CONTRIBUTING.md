@@ -10,7 +10,7 @@ Thanks for taking a look. This repository is small on purpose.
 
 ## What is not welcome
 
-- Third-party skill content. The catalog indexes other projects; it does not redistribute them.
+- Copied third-party skill content. Everything here is written from scratch.
 - New skills without a real workflow behind them. A skill that restates general advice is not useful.
 - Formatting-only pull requests.
 
