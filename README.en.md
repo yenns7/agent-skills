@@ -52,6 +52,21 @@ To install by hand, copy the whole directory into the skills folder your agent r
 
 Keep the whole skill directory. Copying only `SKILL.md` still explains the method, but the supporting scripts and references are lost.
 
+You can also install all four skills as one plugin and follow version updates. In Claude Code:
+
+```text
+/plugin marketplace add yenns7/agent-skills
+/plugin install agent-skills@agent-skills
+```
+
+In Codex, from a terminal:
+
+```bash
+codex plugin marketplace add yenns7/agent-skills
+codex plugin add agent-skills@agent-skills
+```
+
+
 ---
 
 ## ✨ Skills

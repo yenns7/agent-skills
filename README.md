@@ -52,6 +52,21 @@
 
 安装时保留整个 Skill 目录。只复制 `SKILL.md` 也能读懂方法，但配套的脚本和参考文件就没了。
 
+也可以把四个 Skill 当成一个插件装，以后跟着版本更新。Claude Code 里输入：
+
+```text
+/plugin marketplace add yenns7/agent-skills
+/plugin install agent-skills@agent-skills
+```
+
+Codex 在终端运行：
+
+```bash
+codex plugin marketplace add yenns7/agent-skills
+codex plugin add agent-skills@agent-skills
+```
+
+
 ---
 
 ## ✨ Skills

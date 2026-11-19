@@ -8,10 +8,12 @@ Checks, without third-party dependencies:
 - name matches the directory name
 - description is long enough to be useful
 - the English and Chinese READMEs link to each other
+- the plugin marketplace manifest parses and points at existing skills
 """
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -87,10 +89,39 @@ def check_readmes(errors: list[str]) -> None:
             errors.append("README.en.md does not link back to README.md")
 
 
+def check_marketplace(errors: list[str]) -> int:
+    path = ROOT / ".claude-plugin" / "marketplace.json"
+    if not path.is_file():
+        errors.append(".claude-plugin/marketplace.json is missing")
+        return 0
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        errors.append(f"marketplace.json is not valid JSON: {exc}")
+        return 0
+
+    plugins = data.get("plugins")
+    if not isinstance(plugins, list) or not plugins:
+        errors.append("marketplace.json has no plugins")
+        return 0
+
+    total = 0
+    for plugin in plugins:
+        for skill in plugin.get("skills", []):
+            total += 1
+            target = (ROOT / skill).resolve()
+            if not target.is_dir():
+                errors.append(f"marketplace.json points at a missing skill: {skill}")
+            elif not (target / "SKILL.md").is_file():
+                errors.append(f"marketplace.json skill has no SKILL.md: {skill}")
+    return total
+
+
 def main() -> int:
     errors: list[str] = []
     skill_count = check_skills(errors)
     check_readmes(errors)
+    marketplace_count = check_marketplace(errors)
 
     if errors:
         print("validation failed:")
@@ -98,7 +129,7 @@ def main() -> int:
             print(f"  - {error}")
         return 1
 
-    print(f"ok: {skill_count} skills")
+    print(f"ok: {skill_count} skills, {marketplace_count} marketplace entries")
     return 0
 
 

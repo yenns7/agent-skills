@@ -1,0 +1,22 @@
+{
+  "name": "agent-skills",
+  "description": "Four agent skills distilled from real, verified work: oss-contribution, dify-plugin-fix, bilingual-docs and repo-audit.",
+  "owner": {
+    "name": "yenns7"
+  },
+  "plugins": [
+    {
+      "name": "agent-skills",
+      "description": "Contribution gating, Dify plugin fixes, bilingual docs and a read-only repository audit.",
+      "version": "1.0.0",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/oss-contribution",
+        "./skills/dify-plugin-fix",
+        "./skills/bilingual-docs",
+        "./skills/repo-audit"
+      ]
+    }
+  ]
+}
