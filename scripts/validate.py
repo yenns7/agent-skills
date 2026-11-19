@@ -74,17 +74,17 @@ def check_skills(errors: list[str]) -> int:
 
 
 def check_readmes(errors: list[str]) -> None:
-    en = ROOT / "README.md"
-    zh = ROOT / "README.zh.md"
-    if not en.is_file():
-        errors.append("README.md is missing")
+    zh = ROOT / "README.md"
+    en = ROOT / "README.en.md"
     if not zh.is_file():
-        errors.append("README.zh.md is missing")
-    if en.is_file() and zh.is_file():
-        if "README.zh.md" not in en.read_text(encoding="utf-8"):
-            errors.append("README.md does not link to README.zh.md")
-        if "README.md" not in zh.read_text(encoding="utf-8"):
-            errors.append("README.zh.md does not link back to README.md")
+        errors.append("README.md is missing")
+    if not en.is_file():
+        errors.append("README.en.md is missing")
+    if zh.is_file() and en.is_file():
+        if "README.en.md" not in zh.read_text(encoding="utf-8"):
+            errors.append("README.md does not link to README.en.md")
+        if "README.md" not in en.read_text(encoding="utf-8"):
+            errors.append("README.en.md does not link back to README.md")
 
 
 def main() -> int:
